@@ -1,0 +1,29 @@
+#cloud-config
+hostname: coreos2
+coreos:
+  etcd:
+    discovery: https://discovery.etcd.io/e87776d4ad4459a799d267488b61ed50
+    addr: 10.20.30.112:4001
+    peer-addr: 10.20.30.112:7001
+  fleet:
+    public-ip: 10.20.30.112
+    metadata: type=virtual
+  units:
+    - name: etcd.service
+      command: start
+    - name: fleet.service
+      command: start
+    - name: static.network
+      command: start
+      content: |
+        [Match]
+        Name=ens18
+
+        [Network]
+        Address=10.20.30.112/24
+        DNS=10.20.30.13
+        Gateway=10.20.30.1
+
+ssh_authorized_keys:
+- ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA0351ugQ+Mpkqg18WvaonnKfbvKf1z/JMuNZW+bEYkUZMbnEWBEug3aVVYQufeTqfITD4AdzLIUQEsQErVHV7O39RVjvEv+91aTi8nZstE8hu8LVIwr1cSu0uX99yAaXXJM0XbPHKVjdG1DyKoq6l/cgBDgqkCS+alyon++WN+kQLyvijrV+ft82P2eavVadDCZz5h01u8ruyUHK5bJ3ofhcKJWtNHoRHQqIzWY/eb0Qzgbf8qU5Ft3mKPfnfCFdsymyyz5RPPralmCwvL104YpyE5OHKZdA4O8aTHLPb2ZM/F1KSY9TO2QrVSSZj0LC3iDQByiqi0EwkxrbgO43p9Q==
+- ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzWPNoU02NHrTGSMITY2enJF9m36tgo1qRhk7N8Me7LScWFGsn+KYdxh7D/22bZ8GW2iaTe8o1q3mFNAoVIH6F+EA8PeGX3AN/i8XdsVJoBvGXobM3oaVqoGad4a4o8t52GpbadoCPwM0CZZn9oI+XBPV2N+K/xQBQUdwLJVFkiQTLfd5jKiLwcWoRTOotwy28scJuz8FnY8iGtEk2CPfL7AAEmXHhCHkL9KHYQFReIcb4pQnbK3U3tRWO2wposaLuIcOZInedy6fJZSPoqgIOcQGisOWcMgT0QvGQvsOXh8mD87J5m3TBIWgkobB1mqDiH3chTQiMYXYooj/f4cK1
