@@ -1,0 +1,10 @@
+[Unit]
+Description=Web Server 2
+Requires=docker.service
+After=docker.service
+
+[Service]
+ExecStart=/usr/bin/docker run --rm --name=webserver2 -p 81:80 jonlangemak/coreos:webserver2
+ExecStartPost=/usr/bin/etcdctl set /domains/webserver2/%H:%i running
+ExecStop=/usr/bin/docker stop webserver2
+ExecStopPost=/usr/bin/etcdctl rm /domains/webserver2/%H:%i
