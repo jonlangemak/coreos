@@ -1,0 +1,10 @@
+[Unit]
+Description=Web Server 1
+Requires=docker.service
+After=docker.service
+
+[Service]
+ExecStart=/usr/bin/docker run --rm --name=webserver1 -p 80:80 jonlangemak/coreos:webserver1
+ExecStartPost=/usr/bin/etcdctl set /domains/webserver1/%H:%i running
+ExecStop=/usr/bin/docker stop webserver1
+ExecStopPost=/usr/bin/etcdctl rm /domains/webserver1/%H:%i
